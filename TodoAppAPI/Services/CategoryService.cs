@@ -28,13 +28,6 @@ namespace TodoAppAPI.Services
 
         public void Add(CreateCategoryDto category)
         {
-            /*
-            var newCategory = new Category
-            {
-                Title = category.Title,
-
-            };
-            */
             var newCategory = _mapper.Map<Category>(category);
 
             newCategory.UserId = _currentUserService.UserId;
@@ -55,7 +48,6 @@ namespace TodoAppAPI.Services
 
         public CategoryResponseDto GetById(int id)
         {
-            //return _categoryRepository.GetById(id);
 
             var category = _categoryRepository.GetById(id, _currentUserService.UserId);
 
@@ -65,13 +57,6 @@ namespace TodoAppAPI.Services
                     $"Category with id {id} was not found.");
             }
 
-            /*
-            var response = new CategoryResponseDto
-            {
-                Id = category.Id,
-                Title = category.Title,
-            };
-            */
             var response = _mapper.Map<CategoryResponseDto>(category);
 
             return response;
@@ -99,13 +84,6 @@ namespace TodoAppAPI.Services
 
         public void Update(int id, UpdateCategoryDto category)
         {
-            /*
-            var updatedCategory = new Category
-            {
-                Id = id,
-                Title = category.Title,
-            };
-            */
             var updatedCategory = _mapper.Map<Category>(category);
             updatedCategory.Id = id;
 

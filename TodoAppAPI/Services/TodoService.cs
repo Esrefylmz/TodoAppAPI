@@ -29,16 +29,6 @@ namespace TodoAppAPI.Services
 
         public PagedResponseDto<TodoResponseDto> GetList(TodoQueryParameters queryParameters)
         {
-
-            /*
-            var response = todos.Select(todo => new TodoResponseDto
-            {
-                Id = todo.Id,
-                Title = todo.Title,
-                IsCompleted = todo.IsCompleted,
-                CreatedAt = todo.CreatedAt
-            });
-            */
             var result = _todoRepository.GetList(queryParameters, _currentUserService.UserId);
 
             var items = _mapper.Map<IEnumerable<TodoResponseDto>>(result.Items);
@@ -57,14 +47,6 @@ namespace TodoAppAPI.Services
 
         public void Add(CreateTodoDto todo)
         {
-            /*
-            var newTodo = new Todo
-            {
-                Title = todo.Title,
-                IsCompleted = todo.IsCompleted,
-                CreatedAt = DateOnly.FromDateTime(DateTime.Now)
-            };
-            */
             if (todo.CategoryId.HasValue)
             {
                 var category = _categoryRepository.GetById(todo.CategoryId.Value, _currentUserService.UserId);
@@ -86,14 +68,6 @@ namespace TodoAppAPI.Services
 
         public void Update(int id, UpdateTodoDto todo)
         {
-            /*
-            var updatedTodo = new Todo
-            {
-                Id = id,
-                Title = todo.Title,
-                IsCompleted = todo.IsCompleted
-            };
-            */
             if (todo.CategoryId.HasValue)
             {
                 var category = _categoryRepository.GetById(todo.CategoryId.Value, _currentUserService.UserId);

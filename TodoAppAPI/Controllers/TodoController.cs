@@ -52,14 +52,6 @@ namespace TodoAppAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateTodoDto todo)
         {
-            /*
-            var validationResult = _updateTodoValidator.Validate(todo);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-            */
             _updateTodoValidator.ValidateAndThrow(todo);
 
             _todoService.Update(id, todo);
