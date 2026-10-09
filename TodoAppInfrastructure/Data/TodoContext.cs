@@ -21,7 +21,8 @@ namespace TodoAppInfrastructure.Data
             modelBuilder.Entity<Todo>()
                 .HasOne(t => t.Category)
                 .WithMany(c => c.Todos)
-                .HasForeignKey(t => t.CategoryId);
+                .HasForeignKey(t => t.CategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Todo>()
                 .HasOne(t => t.User)
