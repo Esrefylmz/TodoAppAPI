@@ -8,7 +8,6 @@ namespace TodoAppAPI.Services
     public interface ITodoService
     {
         PagedResponseDto<TodoResponseDto> GetList(TodoQueryParameters queryParameters);
-        TodoResponseDto? GetById(int id);
         void Add(CreateTodoDto todo);
         void Update(int id, UpdateTodoDto todo);
         void Delete(int id);

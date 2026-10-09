@@ -55,28 +55,6 @@ namespace TodoAppAPI.Services
             };
         }
 
-        public TodoResponseDto GetById(int id)
-        {
-            var todo = _todoRepository.GetById(id);
-
-            if (todo == null)
-            {
-                throw new NotFoundException($"Todo with id {id} was not found.");
-            }
-            /*
-            var response = new TodoResponseDto
-            {
-                Id = todo.Id,
-                Title = todo.Title,
-                IsCompleted = todo.IsCompleted,
-                CreatedAt = todo.CreatedAt
-            };
-            */
-            var response = _mapper.Map<TodoResponseDto>(todo);
-
-            return response;
-        }
-
         public void Add(CreateTodoDto todo)
         {
             /*

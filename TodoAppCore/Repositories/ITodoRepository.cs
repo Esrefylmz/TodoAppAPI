@@ -7,7 +7,6 @@ namespace TodoAppCore.Repositories
     {
         //Add getList Update Delete
         PagedResult<Todo> GetList(TodoQueryParameters queryParameters, int userId);
-        Todo? GetById(int id);
         void Add(Todo todo);
         bool Update(Todo todo, int userId);
         bool Delete(int id, int userId);

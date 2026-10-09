@@ -39,13 +39,6 @@ namespace TodoAppInfrastructure.Repositories
             return true;
         }
 
-        public Todo? GetById(int id)
-        {
-            return _dbContext.Todos
-                .Include(t => t.Category)
-                .FirstOrDefault(t => t.Id == id);
-        }
-
         public PagedResult<Todo> GetList(TodoQueryParameters queryParameters, int userId)
         {
             var query = _dbContext.Todos
