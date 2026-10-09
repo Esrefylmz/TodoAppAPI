@@ -33,6 +33,14 @@ namespace TodoAppInfrastructure.Data
                 .HasOne(c => c.User)
                 .WithMany(u => u.Categories)
                 .HasForeignKey(c => c.UserId);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Username)
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
         }
     }
 }
