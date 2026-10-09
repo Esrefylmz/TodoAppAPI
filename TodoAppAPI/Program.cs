@@ -71,6 +71,14 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 
 // JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException(
+        "JWT signing key is not configured. Set 'Jwt:Key' using .NET User Secrets.");
+}
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -82,13 +90,13 @@ builder.Services
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
+
+
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
 
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    builder.Configuration["Jwt:Key"]!
-                )
+                Encoding.UTF8.GetBytes(jwtKey)
             )
         };
     });
