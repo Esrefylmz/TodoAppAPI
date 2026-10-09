@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="TodoAppAPI/TodoAppAPI.csproj" />
+  <Project Path="TodoAppCore/TodoAppCore.csproj" Id="979244bf-df0c-4a57-b55f-6b3ea9bb03a0" />
+  <Project Path="TodoAppInfrastructure/TodoAppInfrastructure.csproj" Id="de13208c-4259-4812-bb24-2daf6e2f82ed" />
+</Solution>
