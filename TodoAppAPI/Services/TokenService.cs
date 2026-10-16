@@ -3,8 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TodoAppCore.Models;
+using TodoAppApplication.Abstractions;
 
-namespace TodoAppAPI.Services
+namespace TodoAppApplication.Services
 {
     public class TokenService : ITokenService
     {

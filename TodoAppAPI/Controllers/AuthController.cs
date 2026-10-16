@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using TodoAppAPI.DTOs.Auth;
-using TodoAppAPI.Services;
+using TodoAppApplication.DTOs.Auth;
+using TodoAppApplication.Services;
 
 namespace TodoAppAPI.Controllers
 {

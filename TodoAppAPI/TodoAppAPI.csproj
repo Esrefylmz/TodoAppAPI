@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TodoAppApplication\TodoAppApplication.csproj" />
     <ProjectReference Include="..\TodoAppCore\TodoAppCore.csproj" />
     <ProjectReference Include="..\TodoAppInfrastructure\TodoAppInfrastructure.csproj" />
   </ItemGroup>

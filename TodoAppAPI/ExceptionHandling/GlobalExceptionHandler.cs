@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TodoAppAPI.ExceptionHandling.Exceptions;
+using TodoAppApplication.Exceptions;
 
 namespace TodoAppAPI.ExceptionHandling
 {

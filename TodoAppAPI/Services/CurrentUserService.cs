@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
-using TodoAppAPI.ExceptionHandling.Exceptions;
+using TodoAppApplication.Exceptions;
+using TodoAppApplication.Abstractions;
 
-namespace TodoAppAPI.Services
+namespace TodoAppApplication.Services
 {
     public class CurrentUserService : ICurrentUserService
     {

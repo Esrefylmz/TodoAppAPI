@@ -1,58 +1,47 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
 using System.Text.Json.Serialization;
-using TodoAppAPI.DTOs.Todo;
 using TodoAppAPI.ExceptionHandling;
-using TodoAppAPI.MappingProfiles;
 using TodoAppAPI.Services;
-using TodoAppAPI.Validators.Todo;
+using TodoAppApplication;
+using TodoAppApplication.Abstractions;
+using TodoAppApplication.Services;
 using TodoAppCore.Models;
-using TodoAppCore.Repositories;
-using TodoAppInfrastructure.Data;
-using TodoAppInfrastructure.Repositories;
+using TodoAppInfrastructure;
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Repositories
-builder.Services.AddScoped<ITodoRepository, TodoRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// Application
+builder.Services.AddApplication();
+
+// Infrastructure
+var connectionString =
+    builder.Configuration.GetConnectionString("localdb")
+    ?? throw new InvalidOperationException(
+        "Connection string 'localdb' not found.");
+
+builder.Services.AddInfrastructure(connectionString);
 
 
-// Services
-builder.Services.AddScoped<ITodoService, TodoService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+// API-specific services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 
 // Password hashing
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 
-// FluentValidation
-builder.Services.AddValidatorsFromAssemblyContaining<CreateTodoDtoValidator>();
-
-
+// HttpContext
 builder.Services.AddHttpContextAccessor();
-
-
-// AutoMapper
-builder.Services.AddAutoMapper(
-    cfg =>
-    {
-        // cfg.LicenseKey = "...";
-    },
-    typeof(TodoProfile).Assembly,
-    typeof(CategoryProfile).Assembly
-);
 
 
 // Controllers
@@ -89,8 +78,6 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-
-
 
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
@@ -133,16 +120,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-// Database
-var connectionString =
-    builder.Configuration.GetConnectionString("localdb")
-    ?? throw new InvalidOperationException(
-        "Connection string 'localdb' not found.");
-
-builder.Services.AddDbContext<TodoContext>(options =>
-    options.UseSqlServer(connectionString));
-
-
 var app = builder.Build();
 
 
@@ -156,7 +133,8 @@ app.UseSwagger();
 
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json",
+    options.SwaggerEndpoint(
+        "/swagger/v1/swagger.json",
         "TodoAppAPI_V1");
 });
 
