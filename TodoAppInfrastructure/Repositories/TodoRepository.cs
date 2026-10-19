@@ -6,24 +6,18 @@ using TodoAppInfrastructure.Data;
 
 namespace TodoAppInfrastructure.Repositories
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoRepository: BaseRepository<Todo>, ITodoRepository
     {
-        private readonly TodoContext _dbContext;
-
         public TodoRepository(TodoContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public void Add(Todo todo)
-        {
-            _dbContext.Todos.Add(todo);
-            _dbContext.SaveChanges();
-        }
+
 
         public bool Delete(int id, int userId)
         {
-            var existingTodo = _dbContext.Todos
+            var existingTodo = _dbSet
                 .FirstOrDefault(t =>
                     t.Id == id &&
                     t.UserId == userId);
@@ -33,8 +27,8 @@ namespace TodoAppInfrastructure.Repositories
                 return false;
             }
 
-            _dbContext.Todos.Remove(existingTodo);
-            _dbContext.SaveChanges();
+            Remove(existingTodo);
+            SaveChanges();
 
             return true;
         }

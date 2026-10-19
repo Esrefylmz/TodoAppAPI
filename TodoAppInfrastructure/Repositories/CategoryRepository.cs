@@ -5,24 +5,18 @@ using TodoAppInfrastructure.Data;
 
 namespace TodoAppInfrastructure.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository
+        : BaseRepository<Category>, ICategoryRepository
     {
-        private readonly TodoContext _dbContext;
-
         public CategoryRepository(TodoContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public void Add(Category category)
-        {
-            _dbContext.Categories.Add(category);
-            _dbContext.SaveChanges();
-        }
 
         public bool Delete(int id, int userId)
         {
-            var existingCategory = _dbContext.Categories
+            var existingCategory = _dbSet
                 .FirstOrDefault(c =>
                     c.Id == id &&
                     c.UserId == userId);
@@ -32,8 +26,8 @@ namespace TodoAppInfrastructure.Repositories
                 return false;
             }
 
-            _dbContext.Categories.Remove(existingCategory);
-            _dbContext.SaveChanges();
+            Remove(existingCategory);
+            SaveChanges();
 
             return true;
         }

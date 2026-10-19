@@ -4,13 +4,12 @@ using TodoAppInfrastructure.Data;
 
 namespace TodoAppInfrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
+        : BaseRepository<User>, IUserRepository
     {
-        private readonly TodoContext _dbContext;
-
         public UserRepository(TodoContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         public User? GetByUsername(string username)
@@ -24,11 +23,7 @@ namespace TodoAppInfrastructure.Repositories
             return _dbContext.Users.Find(id);
         }
 
-        public void Add(User user)
-        {
-            _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
-        }
+
 
         public bool ExistsByUsername(string username)
         {
