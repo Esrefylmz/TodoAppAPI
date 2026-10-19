@@ -1,6 +1,6 @@
-﻿using TodoAppApplication.DTOs.Category;
-using TodoAppApplication.DTOs.Common;
-using TodoAppApplication.DTOs.Todo;
+﻿using TodoAppDTOs.Category;
+using TodoAppDTOs.Common;
+using TodoAppDTOs.Todo;
 using TodoAppCore.Models;
 using TodoAppCore.Queries;
 

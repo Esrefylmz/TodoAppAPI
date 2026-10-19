@@ -1,4 +1,4 @@
-﻿using TodoAppApplication.DTOs.Auth;
+﻿using TodoAppDTOs.Auth;
 using TodoAppApplication.Exceptions;
 using TodoAppCore.Models;
 using TodoAppCore.Repositories;

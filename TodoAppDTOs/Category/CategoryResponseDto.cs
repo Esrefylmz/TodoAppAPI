@@ -1,4 +1,4 @@
-﻿namespace TodoAppApplication.DTOs.Category
+﻿namespace TodoAppDTOs.Category
 {
     public class CategoryResponseDto
     {

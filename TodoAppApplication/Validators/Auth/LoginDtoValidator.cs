@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TodoAppApplication.DTOs.Auth;
+using TodoAppDTOs.Auth;
 
 namespace TodoAppApplication.Validators.Auth
 {

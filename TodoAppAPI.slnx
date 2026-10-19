@@ -5,5 +5,6 @@
   <Project Path="TodoAppAPI/TodoAppAPI.csproj" />
   <Project Path="TodoAppApplication/TodoAppApplication.csproj" Id="c6c150c3-4059-4b15-9e26-75a0ebc3c52d" />
   <Project Path="TodoAppCore/TodoAppCore.csproj" Id="979244bf-df0c-4a57-b55f-6b3ea9bb03a0" />
+  <Project Path="TodoAppDTOs/TodoAppDTOs.csproj" Id="ac15de1a-178d-4fc7-9a09-437b9ab0fa2d" />
   <Project Path="TodoAppInfrastructure/TodoAppInfrastructure.csproj" Id="de13208c-4259-4812-bb24-2daf6e2f82ed" />
 </Solution>

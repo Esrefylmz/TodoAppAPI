@@ -1,5 +1,5 @@
 ﻿
-namespace TodoAppApplication.DTOs.Todo
+namespace TodoAppDTOs.Todo
 {
     public class CreateTodoDto
     {

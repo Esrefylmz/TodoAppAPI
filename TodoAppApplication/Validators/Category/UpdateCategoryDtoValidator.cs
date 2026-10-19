@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TodoAppApplication.DTOs.Category;
+using TodoAppDTOs.Category;
 
 namespace TodoAppApplication.Validators.Category
 {

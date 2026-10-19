@@ -1,6 +1,6 @@
-﻿using TodoAppApplication.DTOs.Category;
+﻿using TodoAppDTOs.Category;
 
-namespace TodoAppApplication.DTOs.Todo
+namespace TodoAppDTOs.Todo
 {
     public class TodoResponseDto
     {

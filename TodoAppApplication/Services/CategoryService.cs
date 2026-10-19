@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using TodoAppApplication.DTOs.Category;
-using TodoAppApplication.DTOs.Common;
+using TodoAppDTOs.Category;
+using TodoAppDTOs.Common;
 using TodoAppApplication.Exceptions;
 using TodoAppCore.Models;
 using TodoAppCore.Queries;

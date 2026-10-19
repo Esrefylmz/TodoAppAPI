@@ -1,4 +1,4 @@
-﻿namespace TodoAppApplication.DTOs.Common
+﻿namespace TodoAppDTOs.Common
 {
     public class PagedResponseDto<T>
     {

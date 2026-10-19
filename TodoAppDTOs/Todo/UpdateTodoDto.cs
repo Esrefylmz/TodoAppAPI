@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TodoAppApplication.DTOs.Todo
+namespace TodoAppDTOs.Todo
 {
     public class UpdateTodoDto
     {

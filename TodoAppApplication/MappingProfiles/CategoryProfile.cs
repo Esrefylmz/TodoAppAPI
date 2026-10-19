@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TodoAppApplication.DTOs.Category;
+using TodoAppDTOs.Category;
 using TodoAppCore.Models;
 
 namespace TodoAppApplication.MappingProfiles
