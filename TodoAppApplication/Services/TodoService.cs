@@ -28,21 +28,83 @@ namespace TodoAppApplication.Services
             _currentUserService = currentUserService;
         }
 
-        public PagedResponseDto<TodoResponseDto> GetList(TodoQueryParameters queryParameters)
+        public PagedResponseDto<TodoResponseDto> GetList(
+            TodoQueryParameters queryParameters)
         {
-            var result = _todoRepository.GetList(queryParameters, _currentUserService.UserId);
+            var userId = _currentUserService.UserId;
 
-            var items = _mapper.Map<IEnumerable<TodoResponseDto>>(result.Items);
+            var query = _todoRepository
+                .GetQueryable()
+                .Where(t => t.UserId == userId);
 
-            var totalPages = (int)Math.Ceiling(result.TotalCount / (double)queryParameters.PageSize);
+
+            // Filtering
+            if (queryParameters.IsCompleted.HasValue)
+            {
+                query = query.Where(
+                    t => t.IsCompleted == queryParameters.IsCompleted.Value);
+            }
+
+            if (queryParameters.CategoryId.HasValue)
+            {
+                query = query.Where(
+                    t => t.CategoryId == queryParameters.CategoryId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryParameters.Search))
+            {
+                query = query.Where(
+                    t => t.Title.Contains(queryParameters.Search));
+            }
+
+
+            // Sorting
+            query = queryParameters.SortBy switch
+            {
+                TodoSortBy.Title =>
+                    queryParameters.SortDirection == SortDirection.Desc
+                        ? query.OrderByDescending(t => t.Title)
+                        : query.OrderBy(t => t.Title),
+
+                TodoSortBy.CreatedAt =>
+                    queryParameters.SortDirection == SortDirection.Desc
+                        ? query.OrderByDescending(t => t.CreatedAt)
+                        : query.OrderBy(t => t.CreatedAt),
+
+                TodoSortBy.Id =>
+                    queryParameters.SortDirection == SortDirection.Desc
+                        ? query.OrderByDescending(t => t.Id)
+                        : query.OrderBy(t => t.Id),
+
+                _ => query.OrderBy(t => t.Id)
+            };
+
+
+            // Total count before pagination
+            var totalCount = query.Count();
+
+
+            // Pagination
+            var todos = query
+                .Skip(
+                    (queryParameters.PageNumber - 1)
+                    * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToList();
+
+
+            // Mapping
+            var items = _mapper.Map<List<TodoResponseDto>>(todos);
+
 
             return new PagedResponseDto<TodoResponseDto>
             {
                 Items = items,
                 PageNumber = queryParameters.PageNumber,
                 PageSize = queryParameters.PageSize,
-                TotalCount = result.TotalCount,
-                TotalPages = totalPages
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(
+                    totalCount / (double)queryParameters.PageSize)
             };
         }
 

@@ -63,22 +63,65 @@ namespace TodoAppApplication.Services
             return response;
         }
 
-        public PagedResponseDto<CategoryResponseDto> GetList(CategoryQueryParameters queryParameters)
+        public PagedResponseDto<CategoryResponseDto> GetList(
+            CategoryQueryParameters queryParameters)
         {
-            var result = _categoryRepository.GetList(queryParameters, _currentUserService.UserId);
+            var userId = _currentUserService.UserId;
 
+            var query = _categoryRepository
+                .GetQueryable()
+                .Where(c => c.UserId == userId);
+
+
+            // Filtering
+            if (!string.IsNullOrWhiteSpace(queryParameters.Search))
+            {
+                query = query.Where(
+                    c => c.Title.Contains(queryParameters.Search));
+            }
+
+
+            // Sorting
+            query = queryParameters.SortBy switch
+            {
+                CategorySortBy.Title =>
+                    queryParameters.SortDirection == SortDirection.Desc
+                        ? query.OrderByDescending(c => c.Title)
+                        : query.OrderBy(c => c.Title),
+
+                CategorySortBy.Id =>
+                    queryParameters.SortDirection == SortDirection.Desc
+                        ? query.OrderByDescending(c => c.Id)
+                        : query.OrderBy(c => c.Id),
+
+                _ => query.OrderBy(c => c.Id)
+            };
+
+
+            // Total count
+            var totalCount = query.Count();
+
+
+            // Pagination
+            var categories = query
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToList();
+
+
+            // Mapping
             var items =
-                _mapper.Map<IEnumerable<CategoryResponseDto>>(result.Items);
+                _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
 
             var totalPages = (int)Math.Ceiling(
-                result.TotalCount / (double)queryParameters.PageSize);
+                totalCount / (double)queryParameters.PageSize);
 
             return new PagedResponseDto<CategoryResponseDto>
             {
                 Items = items,
                 PageNumber = queryParameters.PageNumber,
                 PageSize = queryParameters.PageSize,
-                TotalCount = result.TotalCount,
+                TotalCount = totalCount,
                 TotalPages = totalPages
             };
         }

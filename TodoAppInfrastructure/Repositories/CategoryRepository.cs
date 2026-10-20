@@ -40,52 +40,9 @@ namespace TodoAppInfrastructure.Repositories
                     c.UserId == userId);
         }
 
-        public PagedResult<Category> GetList(CategoryQueryParameters queryParameters, int userId)
+        public IQueryable<Category> GetQueryable()
         {
-            var query = _dbContext.Categories
-                .Where(c => c.UserId == userId)
-                .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(queryParameters.Search))
-            {
-                query = query.Where(c =>
-                    c.Title.Contains(queryParameters.Search));
-            }
-
-            if (queryParameters.SortBy.HasValue)
-            {
-                var isDescending =
-                    queryParameters.SortDirection == SortDirection.Desc;
-
-                query = queryParameters.SortBy.Value switch
-                {
-                    CategorySortBy.Title => isDescending
-                        ? query.OrderByDescending(c => c.Title)
-                        : query.OrderBy(c => c.Title),
-
-                    CategorySortBy.Id => isDescending
-                        ? query.OrderByDescending(c => c.Id)
-                        : query.OrderBy(c => c.Id),
-
-                    _ => query.OrderBy(c => c.Id)
-                };
-            }
-            else
-            {
-                query = query.OrderBy(c => c.Id);
-            }
-
-            var totalCount = query.Count();
-
-            query = query
-                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
-                .Take(queryParameters.PageSize);
-
-            return new PagedResult<Category>
-            {
-                Items = query.ToList(),
-                TotalCount = totalCount
-            };
+            return _dbSet.AsQueryable();
         }
 
         public bool Update(Category category, int userId)

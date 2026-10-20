@@ -1,13 +1,10 @@
 ﻿using TodoAppCore.Models;
-using TodoAppCore.Queries;
 
 namespace TodoAppCore.Repositories
 {
     public interface ICategoryRepository
     {
-        PagedResult<Category> GetList(
-            CategoryQueryParameters queryParameters,
-            int userId);
+        IQueryable<Category> GetQueryable();
 
         Category? GetById(int id, int userId);
 
